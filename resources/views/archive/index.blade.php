@@ -24,7 +24,7 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->archiveCategory->name }}</td>
                     <td>
-                        <a class="btn btn-primary" href="{{ url('archive/'.$item->id) }}">Informasi</a>
+                        <a class="btn btn-primary" href="{{ url('download',$item->file_name)}}" download>Unduh</a>
                         <a class="btn btn-warning" href="{{ url('archive/'.$item->id) }}">Ubah</a>
                         <a class="btn btn-danger" href="{{ url('archive/'.$item->id) }}">Hapus</a>
                     </td>

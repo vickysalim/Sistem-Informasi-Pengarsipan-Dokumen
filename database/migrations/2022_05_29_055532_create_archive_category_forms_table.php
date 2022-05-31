@@ -15,8 +15,7 @@ class CreateArchiveCategoryFormsTable extends Migration
     {
         Schema::create('archive_category_forms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id');
-            $table->foreign('category_id')->references('id')->on('archive_categories');
+            $table->unsignedBigInteger('category_id');
             $table->string('name');
             $table->string('description')->nullable();
             $table->timestamps();

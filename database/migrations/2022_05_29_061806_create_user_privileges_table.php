@@ -15,8 +15,7 @@ class CreateUserPrivilegesTable extends Migration
     {
         Schema::create('user_privileges', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id');
-            $table->foreign('category_id')->references('id')->on('archive_categories');
+            $table->unsignedBigInteger('category_id');
             $table->boolean('create');
             $table->boolean('read');
             $table->boolean('update');

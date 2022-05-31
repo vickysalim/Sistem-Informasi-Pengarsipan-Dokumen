@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\ArchiveCategoryController;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,5 @@ Route::get('', function () {
 });
 
 Route::resource('archive', ArchiveController::class);
+
+Route::get('download/{filename}', [FileController::class, 'getFile']);

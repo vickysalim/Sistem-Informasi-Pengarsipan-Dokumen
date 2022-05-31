@@ -10,6 +10,6 @@ class Archive extends Model
     use HasFactory;
 
     public function archiveCategory(){
-        return $this->belongsTo('App\Models\ArchiveCategory', 'id');
+        return $this->belongsTo('App\Models\ArchiveCategory', 'category_id');
     }
 }

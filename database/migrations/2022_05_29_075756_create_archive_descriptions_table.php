@@ -15,11 +15,9 @@ class CreateArchiveDescriptionsTable extends Migration
     {
         Schema::create('archive_descriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('archive_id');
-            $table->foreign('archive_id')->references('id')->on('archives');
-            $table->foreignId('archive_form_id');
-            $table->foreign('archive_form_id')->references('id')->on('archive_category_forms');
-            $table->string('description', 1023);
+            $table->unsignedBigInteger('archive_id');
+            $table->unsignedBigInteger('archive_form_id');
+            $table->string('description', 1023)->nullable();
             $table->timestamps();
         });
     }

@@ -17,8 +17,7 @@ class CreateArchivesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('file_name');
-            $table->foreignId('category_id');
-            $table->foreign('category_id')->references('id')->on('archive_categories');
+            $table->unsignedBigInteger('category_id');
             $table->timestamps();
         });
     }
