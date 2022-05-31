@@ -23,4 +23,6 @@ Route::get('', function () {
 
 Route::resource('archive', ArchiveController::class);
 
-Route::get('download/{filename}', [FileController::class, 'getFile']);
+Route::get('archive/delete/{id}', [ArchiveController::class, 'destroy']);
+
+Route::get('archive/download/{id}', [ArchiveController::class, 'download']);

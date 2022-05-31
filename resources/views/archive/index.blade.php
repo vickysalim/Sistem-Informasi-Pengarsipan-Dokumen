@@ -24,9 +24,9 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->archiveCategory->name }}</td>
                     <td>
-                        <a class="btn btn-primary" href="{{ url('download',$item->file_name)}}" download>Unduh</a>
+                        <a class="btn btn-primary" href="{{ url('archive/download',$item->id)}}" download>Unduh</a>
                         <a class="btn btn-warning" href="{{ url('archive/'.$item->id) }}">Ubah</a>
-                        <a class="btn btn-danger" href="{{ url('archive/'.$item->id) }}">Hapus</a>
+                        <a class="btn btn-danger" href="{{ url('archive/delete/'.$item->id) }}">Hapus</a>
                     </td>
                 </tr>
             @endforeach

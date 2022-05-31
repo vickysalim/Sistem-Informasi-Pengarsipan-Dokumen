@@ -9,6 +9,8 @@ use App\Models\ArchiveDescription;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File; 
 
 class ArchiveController extends Controller
 {
@@ -43,18 +45,27 @@ class ArchiveController extends Controller
 
         $archive->save();
 
-        //$id = $archive->id();
+        $getId = $archive->id;
+        
+        $field = $request->input('inputDescription'.$validateData['kategori']);
 
-        //$archiveDescription = new ArchiveDescription();
-        //$archiveDescription->archive_id = $id;
-        //$archiveDescription->archive_form_id = $validateData['nama'];
-        //$archiveDescription->description = $validateData['nama'];
+        $getCategoryData = ArchiveCategoryForm::select("id")->where("category_id", $archive->category_id)->first();
+
+        $arr = [];
+        
+        for($i = $getCategoryData->id; $i < $getCategoryData->id+count($field); $i++) {
+            $archiveDescription = new ArchiveDescription();
+            $archiveDescription->archive_id = $getId;
+            $archiveDescription->archive_form_id = $i;
+            $archiveDescription->description = $field[$i-$getCategoryData->id];
+            $archiveDescription->save();
+        }
 
         return redirect()->route('archive.index');
     }
 
     public function show() {
-
+        return abort(404);
     }
 
     public function edit() {
@@ -65,7 +76,26 @@ class ArchiveController extends Controller
 
     }
 
-    public function destroy() {
+    public function destroy($archive_id) {
+        $getFileName = Archive::select('file_name')->where('id', $archive_id)->first();
+        
+        if(file_exists(storage_path('app/public/'.$getFileName->file_name))) {
+            File::delete(storage_path('app/public/'. $getFileName->file_name));
+        }
+        
+        $archive = Archive::where('id', $archive_id)->delete();
+        $archiveDescription = ArchiveDescription::where('archive_id', $archive_id)->delete();
 
+        return redirect()->route('archive.index')->with('info', "Arsip berhasil dihapus");
+    }
+
+    public function download($archive_id) {
+        $getFileName = Archive::select('file_name')->where('id', $archive_id)->first();
+
+        if(file_exists(storage_path('app/public/'. $getFileName->file_name))) {
+            return response()->download(storage_path('app/public/'. $getFileName->file_name));
+        } else {
+            return redirect('archive');
+        }
     }
 }

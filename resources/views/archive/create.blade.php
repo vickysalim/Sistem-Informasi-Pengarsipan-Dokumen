@@ -37,12 +37,11 @@
     </div>
 
     @foreach ($archiveCategoryForms as $item)
+    
     <div class="form-group">
         <label id="label{{ $item->id }}" style="display: none;">{{ $item->name }}</label>
         <input type="text" style="display:none" class="form-control" id="deskripsi{{ $item->id }}" data-category="{{ $item->category_id }}" name="inputDescription{{$item->category_id}}[]" placeholder="Enter {{ $item->name }}">
     </div>
-
-    
     @endforeach
 
     <input type="hidden" data-total="{{ $item->count() }}" id="totalField">
