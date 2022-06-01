@@ -13,7 +13,7 @@
     <table class="table mt-2">
         <thead>
             <tr>
-                <th width="55%">Nama Arsip</th>
+                <th width="60%">Nama Arsip</th>
                 <th width="25%">Kategori</th>
                 <th>#</th>
             </tr>
@@ -24,9 +24,22 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->archiveCategory->name }}</td>
                     <td>
-                        <a class="btn btn-primary" href="{{ url('archive/download',$item->id)}}" download>Unduh</a>
-                        <a class="btn btn-warning" href="{{ url('archive/'.$item->id) }}">Ubah</a>
-                        <a class="btn btn-danger" href="{{ url('archive/delete/'.$item->id) }}">Hapus</a>
+                        <div class="row">
+                            <a class="btn btn-primary m-1" href="{{ url('archive/'.$item->id) }}">
+                                <i class="fas fa-eye"></i> Lihat
+                            </a>
+                            <a class="btn btn-info m-1" href="{{ url('archive/download',$item->id)}}" download>
+                                <i class="fas fa-download"></i> Unduh
+                            </a>
+                        </div>
+                        <div class="row">
+                            <a class="btn btn-warning m-1" href="{{ url('archive/'.$item->id.'/edit') }}">
+                                <i class="fas fa-edit"></i> Ubah
+                            </a>
+                            <a class="btn btn-danger m-1" href="{{ url('archive/'.$item->id.'/delete') }}" onclick="return confirm('Apakah anda yakin untuk menghapus arsip ini?')">
+                                <i class="fas fa-trash"></i> Hapus
+                            </a>
+                        </div>
                     </td>
                 </tr>
             @endforeach

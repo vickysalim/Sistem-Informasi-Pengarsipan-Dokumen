@@ -23,6 +23,14 @@ Route::get('', function () {
 
 Route::resource('archive', ArchiveController::class);
 
-Route::get('archive/delete/{id}', [ArchiveController::class, 'destroy']);
+Route::get('archive/c/{archiveCategory}', [ArchiveCategoryController::class, 'show'])->name('category.show');
+
+Route::get('archive/{id}/edit', [ArchiveController::class, 'edit'])->name('archive.edit');
+
+Route::get('/archive/{archive}', [ArchiveController::class, 'show'])->name('archive.show');
+
+Route::patch('/archive/{archive}/update', [ArchiveController::class, 'update'])->name('archive.update');
+
+Route::get('archive/{id}/delete', [ArchiveController::class, 'destroy']);
 
 Route::get('archive/download/{id}', [ArchiveController::class, 'download']);

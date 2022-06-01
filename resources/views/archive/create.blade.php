@@ -16,7 +16,7 @@
     </div>
 
     <div class="form-group">
-        <label>Kategori Surat</label>
+        <label>Kategori Arsip</label>
         <select name="kategori" class="form-control select2" id="pilihkategori" onChange="getCategory()">
             <option disabled selected>Pilih</option>
             @foreach ($archiveCategories as $item)
@@ -47,6 +47,7 @@
     <input type="hidden" data-total="{{ $item->count() }}" id="totalField">
 
     <button type="submit" class="btn btn-primary">Simpan</button>
+    <a class="btn btn-link" href="{{ url()->previous() }}">Kembali</a>
 </form>
 
     <script>

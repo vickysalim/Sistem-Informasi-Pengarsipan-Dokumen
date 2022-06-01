@@ -69,13 +69,13 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="pages/search/simple.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                    <i class="fas fa-users nav-icon"></i>
                                     <p>Pengguna</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="pages/search/enhanced.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                    <i class="fas fa-list nav-icon"></i>
                                     <p>Kategori Arsip</p>
                                 </a>
                             </li>

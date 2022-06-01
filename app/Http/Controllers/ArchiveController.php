@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File; 
+use \Crypt;
 
 class ArchiveController extends Controller
 {
@@ -64,16 +65,55 @@ class ArchiveController extends Controller
         return redirect()->route('archive.index');
     }
 
-    public function show() {
-        return abort(404);
+    public function show(Archive $archive) {
+        $archiveCategory = ArchiveCategory::all();
+        $archiveCategoryForm = ArchiveCategoryForm::all();
+        $archiveDescription = ArchiveDescription::all();
+        return view('archive.show', ['archive' => $archive])->with('archiveCategory', $archiveCategory)->with('archiveCategoryForm', $archiveCategoryForm)->with('archiveDescription', $archiveDescription);
     }
 
-    public function edit() {
-
+    public function edit(Archive $archive) {
+        $archiveCategory = ArchiveCategory::all();
+        $archiveCategoryForm = ArchiveCategoryForm::all();
+        $archiveDescription = ArchiveDescription::all();
+        return view('archive.edit', ['archive' => $archive])->with('archiveCategory', $archiveCategory)->with('archiveCategoryForm', $archiveCategoryForm)->with('archiveDescription', $archiveDescription);
     }
 
-    public function update() {
+    public function update(Request $request, Archive $archive) {
+        $validateData = $request->validate([
+            'name' => 'required'
+        ]);
 
+        if($request->hasFile('file_name')) {
+            $validateFile = $request->validate([
+                'file_name' => 'file'
+            ]);
+
+            $ext = $request->file_name->getClientOriginalExtension();
+            $random = Str::random(16);
+            $nama_file_baru = "arsip-" . time() . "-" . $random . "." . $ext;
+
+            $getFileName = Archive::select('file_name')->where('id', $archive->id)->first();
+
+            if(file_exists(storage_path('app/public/'.$getFileName->file_name))) {
+                File::delete(storage_path('app/public/'. $getFileName->file_name));
+            }
+
+            $request->file_name->storeAs('public', $nama_file_baru);
+
+            Archive::where('id', $archive->id)->update(['file_name' => $nama_file_baru]);
+        }
+
+        //Archive::where('id', $archive->id)->update($validateData);
+        //ArchiveDescription::where('archive_id', $archive->id)->update();
+        
+
+        for($i = 0; $i < count($request->description_id); $i++) {
+            $decrypted_id = Crypt::decrypt($request->description_id[$i]);
+            ArchiveDescription::where('id', $decrypted_id)->update(['description' => $request->description[$i]]);
+        }
+
+        return redirect()->route('archive.index')->with('info', "Arsip berhasil diubah");
     }
 
     public function destroy($archive_id) {

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archive;
 use App\Models\ArchiveCategory;
+use App\Models\ArchiveCategoryForm;
+use App\Models\ArchiveDescription;
 
 use Illuminate\Http\Request;
 
@@ -21,8 +24,11 @@ class ArchiveCategoryController extends Controller
 
     }
 
-    public function show() {
-
+    public function show(ArchiveCategory $archiveCategory) {
+        $archive = Archive::all();
+        $archiveCategoryForm = ArchiveCategoryForm::all();
+        $archiveDescription = ArchiveDescription::all();
+        return view('category.show', ['archiveCategory' => $archiveCategory])->with('archive', $archive)->with('archiveCategoryForm', $archiveCategoryForm)->with('archiveDescription', $archiveDescription);
     }
 
     public function edit() {
