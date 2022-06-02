@@ -62,7 +62,7 @@ class ArchiveController extends Controller
             $archiveDescription->save();
         }
 
-        return redirect()->route('archive.index');
+        return redirect()->route('category.show', $validateData['kategori'])->with('info', "Berhasil menambah arsip");
     }
 
     public function show(Archive $archive) {
@@ -104,16 +104,14 @@ class ArchiveController extends Controller
             Archive::where('id', $archive->id)->update(['file_name' => $nama_file_baru]);
         }
 
-        //Archive::where('id', $archive->id)->update($validateData);
-        //ArchiveDescription::where('archive_id', $archive->id)->update();
-        
+        Archive::where('id', $archive->id)->update($validateData);
 
         for($i = 0; $i < count($request->description_id); $i++) {
             $decrypted_id = Crypt::decrypt($request->description_id[$i]);
             ArchiveDescription::where('id', $decrypted_id)->update(['description' => $request->description[$i]]);
         }
 
-        return redirect()->route('archive.index')->with('info', "Arsip berhasil diubah");
+        return redirect()->route('category.show', [$archive->category_id])->with('info', "Arsip berhasil diubah");
     }
 
     public function destroy($archive_id) {
@@ -126,7 +124,7 @@ class ArchiveController extends Controller
         $archive = Archive::where('id', $archive_id)->delete();
         $archiveDescription = ArchiveDescription::where('archive_id', $archive_id)->delete();
 
-        return redirect()->route('archive.index')->with('info', "Arsip berhasil dihapus");
+        return redirect()->route('index')->with('info', "Arsip berhasil dihapus");
     }
 
     public function download($archive_id) {

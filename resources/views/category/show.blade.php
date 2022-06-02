@@ -1,15 +1,13 @@
 @extends('layout.master')
 
-@section('title', "Arsip")
+@section('title', "Arsip ".$archiveCategory->name)
 
 @section('content')
-
-    <h4 class="m-1">{{$archiveCategory->name}}</h4>
 
     <a class="btn btn-link" href="{{ url('') }}">Kembali</a>
 
     <div>
-        <a class="btn btn-primary" href="{{ url('archive/create') }}">Tambah Arsip Baru</a>
+        <a class="btn btn-primary mb-2" href="{{ url('archive/create') }}">Tambah Arsip Baru</a>
     </div>
 
     @if (session()->has('info'))
@@ -18,16 +16,17 @@
         </div>
     @endif
 
-    <table class="table mt-2">
+    <table class="table dt-responsive nowrap mt-2" id="table">
         <thead>
             <tr>
-                <th>Nama Arsip</th>
+                <th class="all">Nama Arsip</th>
                 @foreach ($archiveCategoryForm as $item)
                     @if ($item->category_id == $archiveCategory->id)
                         <th>{{ $item->name }}</th>
                     @endif
                 @endforeach
-                <th width="15%">#</th>
+                <th>Waktu Pengarsipan</th>
+                <th class="all" width="15%">#</th>
             </tr>
         </thead>
         <tbody>
@@ -40,6 +39,7 @@
                                     <td>{{ $item2->description }}</td>
                                 @endif
                             @endforeach
+                            <td>{{ $item->created_at }}</td>
                             <td>
                                 <div class="row">
                                     <a class="btn btn-primary m-1" href="{{ url('archive/'.$item->id) }}">
@@ -63,5 +63,30 @@
                 @endforeach
         </tbody>
     </table>
+
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
+    <script>
+        $(function () {
+          $('#table').DataTable({
+            "responsive": true,
+            "language": {
+                "lengthMenu": "Menampilkan _MENU_ arsip per halaman",
+                "emptyTable": "<div style='margin: 16px;'>Belum ada arsip yang dibuat</div>",
+                "zeroRecords": "<div style='margin: 16px;'>Arsip tidak ditemukan</div>",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Arsip tidak ditemukan",
+                "infoFiltered": "(berdasarkan filter _MAX_ arsip tersedia)",
+                "paginate": {
+                    "first":      "Awal",
+                    "last":       "Akhir",
+                    "next":       "Selanjutnya",
+                    "previous":   "Sebelumnya"
+                },
+                "search": "Cari:"
+            }
+          });
+        });
+      </script>
 
 @endsection

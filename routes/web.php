@@ -17,11 +17,17 @@ use App\Http\Controllers\FileController;
 |
 */
 
-Route::get('', function () {
-    return redirect('archive');
-});
+// Route::get('', function () {
+//     return redirect('archive');
+// });
+
+Route::resource('', ArchiveCategoryController::class);
 
 Route::resource('archive', ArchiveController::class);
+
+Route::get('archive', function () {
+    return redirect('');
+});
 
 Route::get('archive/c/{archiveCategory}', [ArchiveCategoryController::class, 'show'])->name('category.show');
 
@@ -34,3 +40,13 @@ Route::patch('/archive/{archive}/update', [ArchiveController::class, 'update'])-
 Route::get('archive/{id}/delete', [ArchiveController::class, 'destroy']);
 
 Route::get('archive/download/{id}', [ArchiveController::class, 'download']);
+
+// admin
+
+Route::get('category', [ArchiveCategoryController::class, 'admin_index'])->name('category.index');
+
+Route::get('category/create', [ArchiveCategoryController::class, 'admin_create']);
+
+Route::get('category/{archiveCategory}', [ArchiveCategoryController::class, 'admin_show'])->name('category.detail');
+
+Route::get('category/{id}/delete', [ArchiveCategoryController::class, 'destroy']);
