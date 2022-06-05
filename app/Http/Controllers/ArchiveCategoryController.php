@@ -8,6 +8,8 @@ use App\Models\ArchiveCategoryForm;
 use App\Models\ArchiveDescription;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ArchiveCategoryController extends Controller
 {
@@ -61,12 +63,26 @@ class ArchiveCategoryController extends Controller
     }
 
     public function destroy($category_id) {
-        // kurang destroy archive & file
-
         $archiveCategory = ArchiveCategory::where('id', $category_id)->delete();
         $archiveCategoryForm = ArchiveCategoryForm::where('category_id', $category_id)->delete();
 
-        return redirect()->route('category.index')->with('info', "Kategori berhasil dihapus");
+        $raw = Archive::where('category_id', $category_id)->get();
+
+        for ($i=0; $i < count($raw); $i++) { 
+            $getFileName = $raw[$i]->file_name;
+            $getArchiveId = $raw[$i]->id;
+
+           if(file_exists(storage_path('app/public/'.$getFileName))) {
+               File::delete(storage_path('app/public/'.$getFileName));
+            }
+
+            $archiveDescription = ArchiveDescription::where('archive_id', $getArchiveId)->delete();
+
+        }
+
+       $archive = Archive::destroy($raw->pluck('id')->toArray());
+
+       return redirect()->route('category.index')->with('info', "Kategori berhasil dihapus");
     }
 
     public function admin_index() {
@@ -86,19 +102,4 @@ class ArchiveCategoryController extends Controller
         return view('category.create')->with('archiveCategories', $archiveCategory)->with('archiveCategoryForms', $archiveCategoryForm);
     }
 
-    public function admin_store() {
-
-    }
-
-    public function admin_edit() {
-
-    }
-
-    public function admin_update() {
-
-    }
-
-    public function admin_destroy() {
-
-    }
 }
