@@ -4,11 +4,10 @@
 
 @section('content')
 
-    <a class="btn btn-link" href="{{ url('') }}">Kembali</a>
-
-    <div>
-        <a class="btn btn-primary mb-2" href="{{ url('archive/create') }}">Tambah Arsip Baru</a>
-    </div>
+    <form action="{{ route('archive.create', $archiveCategory->id) }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-primary mb-2">Tambah Arsip Baru</button>
+    </form>
 
     @if (session()->has('info'))
         <div class="alert alert-success">
@@ -41,10 +40,11 @@
                             @endforeach
                             <td>{{ $item->created_at }}</td>
                             <td>
+                                @if (Auth::user()->superadmin == 1)
                                 <div class="row">
                                     <a class="btn btn-primary m-1" href="{{ url('archive/'.$item->id) }}">
                                         <i class="fas fa-eye"></i> Lihat
-                                    </a>
+                                    </a>                                    
                                     <a class="btn btn-info m-1" href="{{ url('archive/download',$item->id)}}" download>
                                         <i class="fas fa-download"></i> Unduh
                                     </a>
@@ -57,6 +57,38 @@
                                         <i class="fas fa-trash"></i> Hapus
                                     </a>
                                 </div>
+                                @endif
+                                @if ($userPrivilege != null && Auth::user()->superadmin == 0)
+                                    <div class="row">
+                                        
+                                        @if ($userPrivilege->read == 1)
+                                            <a class="btn btn-primary m-1" href="{{ url('archive/'.$item->id) }}">
+                                                <i class="fas fa-eye"></i> Lihat
+                                            </a>
+                                        @endif
+                                        
+                                        @if ($userPrivilege->download == 1)
+                                            <a class="btn btn-info m-1" href="{{ url('archive/download',$item->id)}}" download>
+                                                <i class="fas fa-download"></i> Unduh
+                                            </a>
+                                        @endif
+                                        
+                                    </div>
+                                    <div class="row">
+                                        @if ($userPrivilege->update == 1)
+                                            <a class="btn btn-warning m-1" href="{{ url('archive/'.$item->id.'/edit') }}">
+                                                <i class="fas fa-edit"></i> Ubah
+                                            </a>
+                                        @endif
+
+                                        @if ($userPrivilege->delete == 1)
+                                            <a class="btn btn-danger m-1" href="{{ url('archive/'.$item->id.'/delete') }}" onclick="return confirm('Apakah anda yakin untuk menghapus arsip ini?')">
+                                                <i class="fas fa-trash"></i> Hapus
+                                            </a>
+                                        @endif
+                                    </div> 
+                                @endif
+                                
                             </td>
                         </tr>
                     @endif

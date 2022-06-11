@@ -4,8 +4,10 @@
 
 @section('content')
 
-<form action="{{ route('archive.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('archive.store', ) }}" method="POST" enctype="multipart/form-data">
     @csrf
+
+    <input type="hidden" name="c_id" value="{{$archiveCategory->id}}">
 
     <div class="form-group">
         <label>Nama Arsip</label>
@@ -16,32 +18,18 @@
     </div>
 
     <div class="form-group">
-        <label>Kategori Arsip</label>
-        <select name="kategori" class="form-control select2" id="pilihkategori" onChange="getCategory()">
-            <option disabled selected>Pilih</option>
-            @foreach ($archiveCategories as $item)
-                <option value="{{ $item->id }}"> {{ $item->name }} </option>
-            @endforeach
-        </select>
-        @error('kategori')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-    </div>
-
-    <div class="form-group">
-        <label id="labelfile" style="display: none;">File Arsip</label>
-        <input type="file" style="display:none" name="arsip" class="form-control" id="inputfile">
+        <label id="labelfile">File Arsip</label>
+        <input type="file" name="arsip" class="form-control" id="inputfile">
         @error('arsip')
             <div class="text-danger">{{ $message }}</div>
         @enderror
     </div>
 
     @foreach ($archiveCategoryForms as $item)
-    
-    <div class="form-group">
-        <label id="label{{ $item->id }}" style="display: none;">{{ $item->name }}</label>
-        <input type="text" style="display:none" class="form-control" id="deskripsi{{ $item->id }}" data-category="{{ $item->category_id }}" name="inputDescription{{$item->category_id}}[]" placeholder="Enter {{ $item->name }}">
-    </div>
+        <div class="form-group">
+            <label id="label{{ $item->id }}">{{ $item->name }}</label>
+            <input type="text" class="form-control" id="deskripsi{{ $item->id }}" data-category="{{ $item->category_id }}" name="inputDescription{{$item->category_id}}[]" placeholder="Enter {{ $item->name }}">
+        </div>
     @endforeach
 
     <input type="hidden" data-total="{{ $item->count() }}" id="totalField">

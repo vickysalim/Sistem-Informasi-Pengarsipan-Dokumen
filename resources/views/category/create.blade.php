@@ -10,7 +10,7 @@
     <div class="form-group">
         <label>Nama Kategori</label>
         <input type="text" name="nama" class="form-control" required>
-        @error('arsip')
+        @error('nama')
             <div class="text-danger">{{ $message }}</div>
         @enderror
     </div>

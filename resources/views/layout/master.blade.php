@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -37,16 +36,21 @@
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
-                <li class="nav-item">
+
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="#" role="button">
                         <i class="fas fa-user"></i>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#" role="button">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <button class="btn nav-link" type="submit">
+                                <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
                 </li>
             
             </ul>
@@ -66,26 +70,28 @@
                             <p>Beranda</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-user-shield"></i>
-                            <p>Super Admin<i class="fas fa-angle-left right"></i></p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="pages/search/simple.html" class="nav-link">
-                                    <i class="fas fa-users nav-icon"></i>
-                                    <p>Pengguna</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('category') }}" class="nav-link">
-                                    <i class="fas fa-list nav-icon"></i>
-                                    <p>Kategori Arsip</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    @if (Auth::user()->superadmin == 1)
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-user-shield"></i>
+                                <p>Super Admin<i class="fas fa-angle-left right"></i></p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('user') }}" class="nav-link">
+                                        <i class="fas fa-users nav-icon"></i>
+                                        <p>Pengguna</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('category') }}" class="nav-link">
+                                        <i class="fas fa-list nav-icon"></i>
+                                        <p>Kategori Arsip</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
                 </ul>
             </nav>
         </div>

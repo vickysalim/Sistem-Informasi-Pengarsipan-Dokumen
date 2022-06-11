@@ -15,6 +15,7 @@ class AlterUserPrivilegesTable extends Migration
     {
         Schema::table('user_privileges', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
+            $table->boolean('download')->after('delete');
         });
     }
 

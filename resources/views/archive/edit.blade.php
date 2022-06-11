@@ -10,7 +10,7 @@
 
     <div class="form-group">
         <label>Nama Arsip</label>
-        <input type="text" class="form-control" name="name" placeholder="Enter nama program studi"
+        <input type="text" class="form-control" name="name" placeholder="Enter nama arsip"
             value="{{ old('name') ?? $archive->name }}">
 
         @error('nama')
