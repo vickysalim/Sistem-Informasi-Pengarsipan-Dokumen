@@ -4,10 +4,20 @@
 
 @section('content')
 
+@if ($userPrivilege != null && Auth::user()->superadmin == 0)
+    @if($userPrivilege->create == 1)
+        <form action="{{ route('archive.create', $archiveCategory->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-primary mb-2">Tambah Arsip Baru</button>
+        </form>
+    @endif
+@endif
+@if (Auth::user()->superadmin == 1)
     <form action="{{ route('archive.create', $archiveCategory->id) }}" method="POST">
         @csrf
         <button type="submit" class="btn btn-primary mb-2">Tambah Arsip Baru</button>
     </form>
+@endif
 
     @if (session()->has('info'))
         <div class="alert alert-success">

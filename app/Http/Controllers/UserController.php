@@ -232,6 +232,7 @@ class UserController extends Controller
 
     public function alter(Request $request, $id) {
         if(Auth::user()->superadmin == 1) {
+            $uP = UserPrivilege::where('id', $id)->first();
             if($request->create == 1) {
                 UserPrivilege::where('id', $id)->update(['create' => 1]);
             } else {
@@ -255,8 +256,7 @@ class UserController extends Controller
             } else {
                 UserPrivilege::where('id', $id)->update(['download' => 0]);
             }
-
-            return redirect()->route('user.show', $id)->with('info', "Berhasil mengubah hak akses");
+            return redirect()->route('user.show', $uP->user_id)->with('info', "Berhasil mengubah hak akses");
         } else {
             return abort(403);
         }
